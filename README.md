@@ -7,8 +7,9 @@ Launch Chess-Cheat, open your favourite chess website and the tool will dinamica
 
 ### Install
 
-To successfully run Chess-Cheat you are going to need:
-* clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
+To successfully run Chess-Cheat first clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
+
+the you are going to need:
 * [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
