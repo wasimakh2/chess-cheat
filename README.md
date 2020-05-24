@@ -1,7 +1,7 @@
 # Chess-Cheat
 ##### A tool to cheat at online chess
 
-Launch Chess-Cheat, open your favourite chess website and the tool will dinamically overlay the best move for you over your game.
+Launch Chess-Cheat, open your favourite chess website and the tool will dinamically overlay the best move for you.
 
 ### Install
 
@@ -9,7 +9,6 @@ To successfully run Chess-Cheat you are going to need:
 * clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 * [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
-* [beautifulsoup4](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
 * [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
 * [Pyscreenshot](https://pypi.org/project/pyscreenshot/ "Pyscreenshot for python")
