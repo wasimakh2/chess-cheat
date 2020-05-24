@@ -3,6 +3,8 @@
 
 Launch Chess-Cheat, open your favourite chess website and the tool will dinamically overlay the best move for you.
 
+![Example](https://raw.githubusercontent.com/GabrieleMaurina/chess-cheat/master/example.png)
+
 ### Install
 
 To successfully run Chess-Cheat you are going to need:
