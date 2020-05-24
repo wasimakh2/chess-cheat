@@ -6,12 +6,14 @@ Launch Chess-Cheat, open your favourite chess website and the tool will dinamica
 ### Install
 
 To successfully run Chess-Cheat you are going to need:
+* clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 * [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
-* Bs4 for python
+* [beautifulsoup4](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
-* [Stockfish for python](https://pypi.org/project/stockfish/ "Stockfish for python")
-* clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
+* [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
+* [Pyscreenshot](https://pypi.org/project/pyscreenshot/ "Pyscreenshot for python")
+* [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")
 
 ### Usage
 
