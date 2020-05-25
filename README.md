@@ -7,7 +7,9 @@ Launch Chess-Cheat, open your favourite chess website and the tool will dinamica
 
 ### Install
 
-To successfully run Chess-Cheat first clone this repository with `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
+To successfully run Chess-Cheat first clone this repository with:
+
+`git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 
 Then you are going to need:
 * [Python 3](https://www.python.org/ "Python website")
@@ -25,4 +27,8 @@ Once you have all the dependencies installed, clone this repository and lunch `c
 
 ### How it works
 
-Chess-Cheat is based on [Tensorflow_Chessbot](https://github.com/Elucidation/tensorflow_chessbot "Tensorflow_Chessbot github") for recognizing the chessboard and it uses [Stockfish](https://stockfishchess.org/ "Stockfish website") to compute the best move.
+Chess-Cheat is based on [Tensorflow_Chessbot](https://github.com/Elucidation/tensorflow_chessbot "Tensorflow_Chessbot github") for recognizing the chessboard on your screen.
+
+It uses [Stockfish](https://stockfishchess.org/ "Stockfish website") to compute the best move.
+
+It displays the arrows and the buttons on the screen with [Tkinter](https://docs.python.org/3/library/tkinter.html "Tkinter documentation").
