@@ -3,7 +3,7 @@
 
 Launch Chess-Cheat, open your favourite chess website and the tool will dinamically overlay the best move for you.
 
-![Example](https://raw.githubusercontent.com/GabrieleMaurina/chess-cheat/master/example.png)
+![Example](https://raw.githubusercontent.com/GabrieleMaurina/chess-cheat/master/images/example.png)
 
 ### Install
 
@@ -16,6 +16,7 @@ Then you are going to need:
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
 * [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
+* [Pillow](https://pypi.org/project/Pillow/ "Pillow for python")
 * [Pyscreenshot](https://pypi.org/project/pyscreenshot/ "Pyscreenshot for python")
 * [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")
 
