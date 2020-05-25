@@ -11,7 +11,7 @@ To successfully run Chess-Cheat first clone this repository with:
 
 `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 
-Then you are going to need:
+Then install the following dependencies:
 * [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
@@ -22,7 +22,7 @@ Then you are going to need:
 
 ### Usage
 
-Once you have all the dependencies installed, clone this repository and lunch `chess-cheat.py` as follows:
+Once you have all the dependencies installed, launch `chess-cheat.py` as follows:
 
 `python chess-cheat.py`
 
