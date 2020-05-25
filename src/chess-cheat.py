@@ -5,7 +5,7 @@ DELAY = 100
 from pyscreenshot import grab
 from stockfish import Stockfish
 import tkinter as tk
-from board import Board
+from chess_cheat_utils.board import Board
 from timeout_decorator import timeout, TimeoutError
 from multiprocessing import cpu_count
 from math import atan2, sin, cos

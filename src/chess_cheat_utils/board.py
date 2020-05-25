@@ -1,9 +1,13 @@
+from os.path import join, dirname
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import numpy as np
-from finder import find_grayscale_tiles
-from utils import shorten_fen, unflip_fen, get_castling_status
+from chess_cheat_utils.finder import find_grayscale_tiles
+from chess_cheat_utils.utils import shorten_fen, unflip_fen, get_castling_status
+
+def get_model_paths():
+	return ['../model/model.pb', join(dirname(__file__), 'model.pb')]
 
 def load_graph(frozen_graph_filepath):
 	with tf.io.gfile.GFile(frozen_graph_filepath, "rb") as f:
@@ -14,8 +18,11 @@ def load_graph(frozen_graph_filepath):
 	return graph
 
 class Board():
-	def __init__(self, frozen_graph_path='model.pb'):
-		graph = load_graph(frozen_graph_path)
+	def __init__(self, frozen_graph_paths=get_model_paths()):
+		try:
+			graph = load_graph(frozen_graph_paths[0])
+		except Exception:
+			graph = load_graph(frozen_graph_paths[1])
 		self.sess = tf.compat.v1.Session(graph=graph)
 		self.x = graph.get_tensor_by_name('tcb/Input:0')
 		self.keep_prob = graph.get_tensor_by_name('tcb/KeepProb:0')
