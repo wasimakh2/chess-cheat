@@ -7,34 +7,41 @@ Launch Chess-Cheat, open your favourite chess website and the tool will dinamica
 
 ### Install
 
-Prerequisites:
+Prerequisites to install:
 * [Python 3](https://www.python.org/ "Python website")
-* [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
+* [Stockfish](https://stockfishchess.org/ "Stockfish website")
 
-To install Chess-Cheat simply run:
+Then simply run:
 
 `python -m pip install chess-cheat`
 
 ### Usage
 
-Simply launch it as follow:
+Launch it as follow:
 
 `python -m chess-cheat`
 
+How the UI works:
+* The switch "White/Black" allows you to tell Chess-Cheat if you are playing white or black.
+* The "Board" button allows you to tell Chess-Cheat where the board is on the screen to facilitate recognition.
+* The best move foy you is displayed both as an arrow and as a string.
+* A green background indicates that it is working correctly.
+* A red background indicates that it is not finding the board on the screen.
+
 ### Cloning this repo
 
-To successfully clone Chess-Cheat from this repo and run it you need to run:
+To successfully clone Chess-Cheat from this repo and execute it you need to run:
 
 `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 
 Then install the following dependencies:
-
+* [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
 * [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
 * [Pillow](https://pypi.org/project/Pillow/ "Pillow for python")
 * [Pyscreenshot](https://pypi.org/project/pyscreenshot/ "Pyscreenshot for python")
-* [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")### How it works
+* [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")
 
 ### How it works
 
