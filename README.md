@@ -7,24 +7,34 @@ Launch Chess-Cheat, open your favourite chess website and the tool will dinamica
 
 ### Install
 
-To successfully run Chess-Cheat first clone this repository with:
+Prerequisites:
+* [Python 3](https://www.python.org/ "Python website")
+* [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
+
+To install Chess-Cheat simply run:
+
+`python -m pip install chess-cheat`
+
+### Usage
+
+Simply launch it as follow:
+
+`python -m chess-cheat`
+
+### Cloning this repo
+
+To successfully clone Chess-Cheat from this repo and run it you need to run:
 
 `git clone https://github.com/GabrieleMaurina/chess-cheat.git`
 
 Then install the following dependencies:
-* [Python 3](https://www.python.org/ "Python website")
+
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
 * [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
 * [Pillow](https://pypi.org/project/Pillow/ "Pillow for python")
 * [Pyscreenshot](https://pypi.org/project/pyscreenshot/ "Pyscreenshot for python")
-* [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")
-
-### Usage
-
-Once you have all the dependencies installed, launch `chess-cheat.py` as follows:
-
-`python chess-cheat.py`
+* [Timeout decorator](https://pypi.org/project/timeout-decorator/ "Timeout decorator for python")### How it works
 
 ### How it works
 
