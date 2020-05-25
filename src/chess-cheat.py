@@ -8,6 +8,7 @@ import tkinter as tk
 from board import Board
 from timeout_decorator import timeout, TimeoutError
 from multiprocessing import cpu_count
+from math import atan2, sin, cos
 
 def reorder_rect(x1, y1, x2, y2):
 	nx1 = min(x1, x2)
@@ -19,6 +20,10 @@ def reorder_rect(x1, y1, x2, y2):
 def arrow(r, a, move, corners, active):
 	dx = (corners[2] - corners[0]) // 8
 	dy = (corners[3] - corners[1]) // 8
+	dx2 = dx // 2
+	dy2 = dy // 2
+	dx3 = dx // 3
+	dy3 = dy // 3
 	corners[0] += r.bx1
 	corners[1] += r.by1
 	corners[2] += r.bx1
@@ -28,7 +33,8 @@ def arrow(r, a, move, corners, active):
 		move = [7 - v for v in move]
 	move[1] = 7 - move[1]
 	move[3] = 7 - move[3]
-	move = [int(corners[0] + v*dx + dx/2) if i % 2 == 0 else int(corners[1] + v*dy + dy/2) for i, v in enumerate(move)]
+	move = [int(corners[0] + v*dx + dx2) if i % 2 == 0 else int(corners[1] + v*dy + dy2) for i, v in enumerate(move)]
+
 	x1 = min(move[0], move[2])
 	y1 = min(move[1], move[3])
 	x2 = max(move[0], move[2])
@@ -36,16 +42,39 @@ def arrow(r, a, move, corners, active):
 	x = False
 	y = False
 	if x1 == x2:
-		x1 -= dx // 5
-		x2 += dx // 5
-		x = True
+		x1 -= dx3
+		x2 += dx3
 	if y1 == y2:
-		y1 -= dy // 5
-		y2 += dy // 5
-		y = False
+		y1 -= dy3
+		y2 += dy3
+	alpha = atan2(y2 - y1, x2 - x1)
+	x1 += int(dx3 * cos(alpha))
+	y1 += int(dy3 * sin(alpha))
+	x2 -= int(dx3 * cos(alpha))
+	y2 -= int(dy3 * sin(alpha))
+	x_size = x2 - x1
+	y_size = y2 - y1
+
+	if move[0] < move[2]:
+		ax1 = 0
+		ax2 = x_size
+	elif move[0] > move[2]:
+		ax1 = x_size
+		ax2 = 0
+	else:
+		ax1 = ax2 = x_size // 2
+	if move[1] < move[3]:
+		ay1 = 0
+		ay2 = y_size
+	elif move[1] > move[3]:
+		ay1 = y_size
+		ay2 = 0
+	else:
+		ay1 = ay2 = y_size // 2
+
 	a.c.delete('all')
-	a.c.create_line(move[0]-x1, move[1]-y1, move[2]-x1, move[3]-y1, arrow=tk.LAST, width=10)
-	a.geometry('{}x{}+{}+{}'.format(x2 - x1, y2 - y1, x1, y1))
+	a.c.create_line(ax1, ay1, ax2, ay2, arrow=tk.LAST, arrowshape=(30,40,20), width=10)
+	a.geometry('{}x{}+{}+{}'.format(x_size, y_size, x1, y1))
 
 def init_arrow(r):
 	a = tk.Toplevel(r)
@@ -140,7 +169,7 @@ def screenshot(r, a):
 	a.deiconify()
 	return img
 
-@timeout(1, use_signals=False)
+@timeout(2, use_signals=False)
 def run_fish(s, fen):
 	s.set_fen_position(fen)
 	return s.get_best_move()
@@ -156,7 +185,6 @@ def cheat(r, v, l, a, s, b):
 			try:
 				move = run_fish(s, fen)
 			except TimeoutError:
-				print('FEN: {}'.format(fen))
 				s = create_fish()
 				r.configure(background='red')
 			else:
@@ -170,7 +198,7 @@ def cheat(r, v, l, a, s, b):
 	r.after(DELAY, cheat, r, v, l, a, s, b)
 
 def create_fish():	
-	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 30})
+	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 1000})
 	return s
 
 def main():
