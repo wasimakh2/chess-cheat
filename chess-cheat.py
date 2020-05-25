@@ -67,6 +67,7 @@ def init_draw(r):
 	d.wait_visibility(d)
 	d.attributes('-fullscreen', True)
 	d.attributes('-alpha', 0.3)
+	d.attributes('-topmost', True)
 
 	c = tk.Canvas(d)
 	r.bx1, r.by1, r.bx2, r.by2 = 0, 0, 0, 0
@@ -142,8 +143,8 @@ def screenshot(r, a):
 	a.deiconify()
 	return img
 
-@timeout(1, use_signals=False)
-def run_stockfish(s, fen):
+@timeout(15, use_signals=False)
+def run_fish(s, fen):
 	s.set_fen_position(fen)
 	return s.get_best_move()
 
@@ -156,8 +157,9 @@ def cheat(r, v, l, a, s, b):
 
 		if fen:
 			try:
-				move = run_stockfish(s, fen)
+				move = run_fish(s, fen)
 			except TimeoutError:
+				print('FEN: {}'.format(fen))
 				s = create_fish()
 				r.configure(background='red')
 			else:
@@ -171,16 +173,11 @@ def cheat(r, v, l, a, s, b):
 	r.after(DELAY, cheat, r, v, l, a, s, b)
 
 def create_fish():	
-	s = Stockfish()
-	#s._set_option('Threads', cpu_count())
-	#s._parameters.update({'Threads': cpu_count()})
-	#s._set_option('Minimum Thinking Time', 10000)
-	#s._parameters.update({'Minimum Thinking Time': 10000})
+	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 30})
 	return s
 
 def main():
 	s = create_fish()
-	print(s.get_parameters())
 	b = ChessboardPredictor()
 	r, v, l, a = init_window()
 	r.after(100, cheat, r, v, l, a, s, b)

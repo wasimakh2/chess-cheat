@@ -3,7 +3,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import tensorflow as tf
 import numpy as np
 from finder import findGrayscaleTilesInImage
-from helper_functions import shortenFEN, unflipFEN
+from helper_functions import shortenFEN, unflipFEN, getCastlingStatus
 
 def load_graph(frozen_graph_filepath):
 	with tf.io.gfile.GFile(frozen_graph_filepath, "rb") as f:
@@ -37,9 +37,11 @@ class ChessboardPredictor():
 
 		if active == 'b':
 			fen = unflipFEN(fen)
-
 		fen = shortenFEN(fen)
-		fen = '{} {} KQkq - 0 0'.format(fen, active)
+
+		castling = getCastlingStatus(fen)
+
+		fen = '{} {} {} - 0 0'.format(fen, castling, active)
 		return fen, list(corners)
 
 	def close(self):
