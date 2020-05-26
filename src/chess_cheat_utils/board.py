@@ -38,6 +38,10 @@ class Board():
 		[self.probabilities, self.prediction], 
 		feed_dict={self.x: validation_set, self.keep_prob: 1.0})
 
+		certanty = np.array(list(map(lambda x: x[0][x[1]], zip(guess_prob, guessed))))
+		certainty = certanty.reshape([8,8])[::-1,:]
+		certanty = certanty.min()
+
 		labelIndex2Name = lambda label_index: ' KQRBNPkqrbnp'[label_index]
 		pieceNames = list(map(lambda k: '1' if k == 0 else labelIndex2Name(k), guessed))
 		fen = '/'.join([''.join(pieceNames[i*8:(i+1)*8]) for i in reversed(range(8))])
@@ -48,7 +52,8 @@ class Board():
 		fen = shorten_fen(fen)
 
 		fen = '{} {} {} - 0 1'.format(fen, active, castling)
-		return fen, list(corners)
+
+		return (fen, list(corners)) if certanty >.9 else (None, None)
 
 	def close(self):
 		self.sess.close()

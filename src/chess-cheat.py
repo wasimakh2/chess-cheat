@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 DELAY = 100
+DRAW_ALPHA = 0.3
+ARROW_ALPHA = 0.6
 
 from pyscreenshot import grab
 from stockfish import Stockfish
@@ -9,6 +11,9 @@ from chess_cheat_utils.board import Board
 from timeout_decorator import timeout, TimeoutError
 from multiprocessing import cpu_count
 from math import atan2, sin, cos
+from PIL import Image
+from os import remove
+from functools import lru_cache
 
 def reorder_rect(x1, y1, x2, y2):
 	nx1 = min(x1, x2)
@@ -18,6 +23,7 @@ def reorder_rect(x1, y1, x2, y2):
 	return nx1, ny1, nx2, ny2
 
 def arrow(r, a, move, corners, active):
+	if not move: return
 	dx = (corners[2] - corners[0]) // 8
 	dy = (corners[3] - corners[1]) // 8
 	dx2 = dx // 2
@@ -73,17 +79,25 @@ def arrow(r, a, move, corners, active):
 		ay1 = ay2 = y_size // 2
 
 	a.c.delete('all')
+	a.c.create_rectangle(0, 0, x_size, y_size, fill='white')
 	a.c.create_line(ax1, ay1, ax2, ay2, arrow=tk.LAST, arrowshape=(30,40,20), width=10)
 	a.geometry('{}x{}+{}+{}'.format(x_size, y_size, x1, y1))
+	a.c.dx = x1
+	a.c.dy = y1
+	a.c.x_size = x_size
+	a.c.y_size = y_size
+	a.deiconify()
 
 def init_arrow(r):
 	a = tk.Toplevel(r)
 	a.overrideredirect(True)
 	a.wait_visibility(a)
-	a.attributes('-alpha', 0.6)
+	a.attributes('-alpha', ARROW_ALPHA)
+	a.attributes('-topmost', True)
 	a.geometry('0x0')
 
 	c = tk.Canvas(a)
+	c.dx = c.dy = c.x_size = c.y_size = 0
 	c.pack(fill=tk.BOTH, expand=True)
 	a.c = c
 	return a
@@ -92,7 +106,7 @@ def init_draw(r):
 	d = tk.Toplevel(r)
 	d.wait_visibility(d)
 	d.attributes('-fullscreen', True)
-	d.attributes('-alpha', 0.3)
+	d.attributes('-alpha', DRAW_ALPHA)
 	d.attributes('-topmost', True)
 
 	c = tk.Canvas(d)
@@ -129,7 +143,7 @@ def init_draw(r):
 
 def init_window():
 	r = tk.Tk()
-	r.title('Chess Cheat')
+	r.title('Chess-Cheat')
 	r.minsize(190, 20)
 	r.attributes('-topmost', True)
 	r.paused = False
@@ -159,19 +173,34 @@ def init_window():
 
 	return r, v, l, a
 
-def screenshot(r, a):
-	img = None
-	a.withdraw()
-	if (r.bx1 or r.by1 or r.bx2 or r.by2) and r.bx1 != r.bx2 and r.by1 != r.by2:
-		img = grab(bbox=(r.bx1, r.by1, r.bx2, r.by2))
-	else:
-		img = grab()
-	a.deiconify()
-	return img
+def subtract(b, f, fa):
+	return (b - f * fa) / (1 - fa)
 
-@timeout(2, use_signals=False)
+def subtract_arrow(r, a, i, bounds):
+	pixels = i.load()
+	a.c.postscript(file='arrow.eps', pagewidth='{}p'.format(a.c.x_size))
+	with Image.open('arrow.eps') as arrow:
+		for x in range(arrow.size[0] - 1):
+			for y in range(1, arrow.size[1]):
+				x_s = int(x + a.c.dx - bounds[0])
+				y_s = int(y + a.c.dy - bounds[1])
+				if x_s >= 0 and y_s >= 0 and x_s < i.size[0] and y_s < i.size[1]:
+					pixels[x_s,y_s] = tuple(map(lambda pair: int(subtract(pair[0], pair[1], ARROW_ALPHA)), zip(pixels[x_s,y_s], arrow.getpixel((x,y)))))
+	remove('arrow.eps')
+	return i
+
+def screenshot(r, a):
+	bounds = (0, 0, r.screenwidth, r.screenheight) 
+	if (r.bx1 or r.by1 or r.bx2 or r.by2) and r.bx1 != r.bx2 and r.by1 != r.by2:
+		bounds = (r.bx1, r.by1, r.bx2, r.by2)
+		i = grab(bbox=bounds)
+	else:
+		i = grab()
+	return subtract_arrow(r, a, i, bounds)
+
+@timeout(.7, use_signals=False)
+@lru_cache
 def run_fish(s, fen):
-	s.set_fen_position(fen)
 	return s.get_best_move()
 
 def cheat(r, v, l, a, s, b):
@@ -182,6 +211,7 @@ def cheat(r, v, l, a, s, b):
 		#print('FEN: {}'.format(fen))
 
 		if fen:
+			s.set_fen_position(fen)
 			try:
 				move = run_fish(s, fen)
 			except TimeoutError:
@@ -198,7 +228,7 @@ def cheat(r, v, l, a, s, b):
 	r.after(DELAY, cheat, r, v, l, a, s, b)
 
 def create_fish():	
-	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 1000})
+	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 500})
 	return s
 
 def main():
