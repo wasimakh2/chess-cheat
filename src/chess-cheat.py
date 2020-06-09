@@ -187,21 +187,25 @@ def subtract_arrow(r, a, i, bounds):
 				if x_s >= 0 and y_s >= 0 and x_s < i.size[0] and y_s < i.size[1]:
 					pixels[x_s,y_s] = tuple(map(lambda pair: int(subtract(pair[0], pair[1], ARROW_ALPHA)), zip(pixels[x_s,y_s], arrow.getpixel((x,y)))))
 	remove('arrow.eps')
+	#i.save('image.png')
 	return i
 
 def screenshot(r, a):
+	a.withdraw()
 	bounds = (0, 0, r.screenwidth, r.screenheight) 
 	if (r.bx1 or r.by1 or r.bx2 or r.by2) and r.bx1 != r.bx2 and r.by1 != r.by2:
 		bounds = (r.bx1, r.by1, r.bx2, r.by2)
 		i = grab(bbox=bounds)
 	else:
 		i = grab()
-	return subtract_arrow(r, a, i, bounds)
+	#return subtract_arrow(r, a, i, bounds)
+	a.deiconify()
+	return i
 
-@timeout(.7, use_signals=False)
+@timeout(1.2, use_signals=False)
 @lru_cache
 def run_fish(s, fen):
-	return s.get_best_move()
+	return s.get_best_move_time(1000)
 
 def cheat(r, v, l, a, s, b):
 	if not r.paused:
@@ -228,7 +232,9 @@ def cheat(r, v, l, a, s, b):
 	r.after(DELAY, cheat, r, v, l, a, s, b)
 
 def create_fish():	
-	s = Stockfish(parameters={'Threads':cpu_count(), 'Minimum Thinking Time': 500})
+	s = Stockfish()#parameters={'Threads':cpu_count()})
+	s.set_depth(20)
+	#print(s.get_parameters())
 	return s
 
 def main():

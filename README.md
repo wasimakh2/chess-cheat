@@ -50,3 +50,7 @@ Chess-Cheat is based on [Tensorflow_Chessbot](https://github.com/Elucidation/ten
 It uses [Stockfish](https://stockfishchess.org/ "Stockfish website") to compute the best move.
 
 It displays the arrows and the buttons on the screen with [Tkinter](https://docs.python.org/3/library/tkinter.html "Tkinter documentation").
+
+### Why is the arrow blinking?
+
+Because the image recognition model needs to see the board unobstructed. By making the arrow blink, it has a chance to capture the screen.
