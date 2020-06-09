@@ -37,6 +37,7 @@ To successfully clone Chess-Cheat from this repo and execute it you need to run:
 Then install the following dependencies:
 * [Python 3](https://www.python.org/ "Python website")
 * [Tensorflow](https://pypi.org/project/tensorflow/ "Tensorflow for python")
+* [Numpy](https://pypi.org/project/numpy/ "Numpy for python")
 * [Stockfish](https://stockfishchess.org/ "Stockfish website") installed in your system
 * [Stockfish](https://pypi.org/project/stockfish/ "Stockfish for python") for python
 * [Pillow](https://pypi.org/project/Pillow/ "Pillow for python")
